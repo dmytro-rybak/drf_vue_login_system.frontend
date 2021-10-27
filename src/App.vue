@@ -1,30 +1,38 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </div>
   <router-view/>
 </template>
 
 <style lang="scss">
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: Avenir, Roboto, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
 }
+</style>
+<script>
+import store from "./store";
+import mapGetters from "vuex/dist/vuex.mjs";
+import mapState from "vuex/dist/vuex.mjs";
 
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
+export default {
+  computed: {
+    access(){
+      return this.$store.state.accessToken
+    },
+    refresh(){
+      return this.$store.state.refreshToken
+    },
+    auth(){
+      return this.$store.getters.isAuth
+    }
+  },
+  mounted() {
+    if (this.access){
+      store.dispatch('verifyToken',{"accessToken": this.accessToken, "refreshToken": this.refreshToken})
     }
   }
 }
-</style>
+</script>
+
